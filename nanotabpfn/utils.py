@@ -25,7 +25,7 @@ def make_global_bucket_edges(filename, n_buckets=100, device=get_default_device(
 
         y_subset = np.array(y[:num_tables_to_use, :], dtype=np.float32)
         y_means = y_subset.mean(axis=1, keepdims=True)
-        y_stds = y_subset.std(axis=1, keepdims=True) + 1e-8
+        y_stds = y_subset.std(axis=1, keepdims=True, ddof=1) + 1e-8
         ys_concat = ((y_subset - y_means) / y_stds).ravel()
 
     if ys_concat.size < n_buckets:

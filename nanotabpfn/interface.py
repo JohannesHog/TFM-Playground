@@ -166,7 +166,7 @@ class NanoTabPFNRegressor():
         self.y_train = y_train
 
         self.y_train_mean = np.mean(self.y_train)
-        self.y_train_std = np.std(self.y_train) + 1e-8
+        self.y_train_std = np.std(self.y_train, ddof=1) + 1e-8
         self.y_train_n = (self.y_train - self.y_train_mean) / self.y_train_std
 
     def predict(self, X_test: np.ndarray) -> np.ndarray:
