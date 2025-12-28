@@ -6,6 +6,7 @@ import h5py
 import numpy as np
 import torch
 from ticl.priors import GPPrior, MLPPrior, ClassificationAdapterPrior, BooleanConjunctionPrior, StepFunctionPrior
+from tqdm import tqdm
 
 from .config import get_ticl_prior_config
 
@@ -70,7 +71,7 @@ def dump_prior_to_h5(
         f.create_dataset("original_batch_size", data=np.array((batch_size,)), chunks=(1,))
         f.create_dataset("problem_type", data=problem_type, dtype=h5py.string_dtype())
 
-        for e in prior:
+        for e in tqdm(prior):
             x = e["x"].to("cpu").numpy()
             y = e["y"].to("cpu").numpy()
             single_eval_pos = e["single_eval_pos"]
