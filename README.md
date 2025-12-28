@@ -124,7 +124,7 @@ prior = TabICLPriorDataLoader(
 ```
 You can check out `next(iter(prior))` if you want to see an example batch.
 
-Check out `visualization_demo.ipynb` for some more examples.
+Check out `prior_visualization.ipynb` for some more examples.
 
 ### Supported Priors
 

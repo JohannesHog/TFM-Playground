@@ -24,6 +24,11 @@ dependencies = [
     "schedulefree>=1.4",
     "pfns==0.3.0",
     "openml==0.15.1",
+    "tabicl",
+    "ticl @ git+https://github.com/microsoft/ticl.git@main",
+    "interpret",
+    "numba",
+    "mlflow"
 ]
 
 [project.optional-dependencies]
