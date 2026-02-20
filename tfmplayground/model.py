@@ -9,18 +9,18 @@ from torch.nn.modules.transformer import MultiheadAttention, Linear, LayerNorm
 
 
 class NanoTabPFNModel(nn.Module):
-    def __init__(self, embedding_size: int, num_attention_heads: int, mlp_hidden_size: int, num_layers: int, num_outputs: int):
+    def __init__(self, embedding_size: int, num_attention_heads: int, num_layers: int, num_outputs: int, mlp_hidden_multiple: int = 4):
         """ Initializes the feature/target encoder, transformer stack and decoder """
         super().__init__()
         self.embedding_size = embedding_size
         self.num_attention_heads = num_attention_heads
-        self.mlp_hidden_size = mlp_hidden_size
+        self.mlp_hidden_multiple = mlp_hidden_multiple
         self.num_layers = num_layers
         self.num_outputs = num_outputs
         self.feature_encoder = FeatureEncoder(embedding_size)
         self.target_encoder = TargetEncoder(embedding_size)
-        self.transformer_encoder = TransformerEncoderStack(num_layers, embedding_size, num_attention_heads, mlp_hidden_size)
-        self.decoder = Decoder(embedding_size, mlp_hidden_size, num_outputs)
+        self.transformer_encoder = TransformerEncoderStack(num_layers, embedding_size, num_attention_heads, embedding_size * mlp_hidden_multiple)
+        self.decoder = Decoder(embedding_size, embedding_size * mlp_hidden_multiple, num_outputs)
 
     def forward(self, *args, **kwargs) -> torch.Tensor:
         """
