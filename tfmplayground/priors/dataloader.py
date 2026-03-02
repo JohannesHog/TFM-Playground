@@ -5,7 +5,6 @@ from typing import Callable, Dict, Iterator, Union
 import h5py
 import torch
 from tabicl.prior.dataset import PriorDataset as TabICLPriorDataset
-from ticl.dataloader import PriorDataLoader as TICLPriorDataset
 from torch.utils.data import DataLoader
 
 
@@ -167,62 +166,6 @@ class TabICLPriorDataLoader(DataLoader):
 
     def __iter__(self):
         return iter(self.tabicl_to_ours(next(self.pd)) for _ in range(self.num_steps))
-
-    def __len__(self):
-        return self.num_steps
-
-
-class TICLPriorDataLoader(DataLoader):
-    """DataLoader sampling synthetic prior data from TICL's PriorDataLoader.
-
-    Args:
-        prior (Any): A TICL prior object supporting get_batch.
-        num_steps (int): Number of batches per epoch.
-        batch_size (int): Number of functions sampled per batch.
-        num_datapoints_max (int): Number of datapoints sampled per function.
-        num_features (int): Dimensionality of x vectors.
-        device (torch.device): Target device for tensors.
-        min_eval_pos (int, optional): Minimum evaluation position in the sequence.
-    """
-
-    def __init__(
-        self,
-        prior,
-        num_steps: int,
-        batch_size: int,
-        num_datapoints_max: int,
-        num_features: int,
-        device: torch.device,
-        min_eval_pos: int = 10,
-    ):
-        self.num_steps = num_steps
-        self.device = device
-
-        self.pd = TICLPriorDataset(
-            prior=prior,
-            num_steps=num_steps,
-            batch_size=batch_size,
-            min_eval_pos=min_eval_pos,
-            n_samples=num_datapoints_max,
-            device=device,
-            num_features=num_features,
-        )
-
-    def ticl_to_ours(self, d):
-        (info, x, y), target_y, single_eval_pos = d
-        x = x.permute(1, 0, 2)
-        y = y.permute(1, 0)
-        target_y = target_y.permute(1, 0)
-
-        return dict(
-            x=x.to(self.device),
-            y=y.to(self.device),
-            target_y=target_y.to(self.device),  # target_y is identical to y (for downstream compatibility)
-            single_eval_pos=single_eval_pos,
-        )
-
-    def __iter__(self):
-        return (self.ticl_to_ours(batch) for batch in self.pd)
 
     def __len__(self):
         return self.num_steps
