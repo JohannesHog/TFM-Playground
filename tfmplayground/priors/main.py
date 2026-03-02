@@ -6,7 +6,7 @@ import random
 import numpy as np
 import torch
 
-from .dataloader import TabICLPriorDataLoader, TICLPriorDataLoader
+from .dataloader import TabICLPriorDataLoader
 from .utils import build_ticl_prior, dump_prior_to_h5
 
 

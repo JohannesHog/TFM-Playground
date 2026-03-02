@@ -5,7 +5,6 @@ from .dataloader import (
     PriorDataLoader,
     PriorDumpDataLoader,
     TabICLPriorDataLoader,
-    TICLPriorDataLoader,
 )
 from .utils import build_ticl_prior, dump_prior_to_h5
 
@@ -15,7 +14,6 @@ __all__ = [
     "PriorDataLoader", 
     "PriorDumpDataLoader",
     "TabICLPriorDataLoader",
-    "TICLPriorDataLoader",
     "build_ticl_prior",
     "dump_prior_to_h5",
 ]
