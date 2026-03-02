@@ -7,7 +7,7 @@ import numpy as np
 import torch
 
 from .dataloader import TabICLPriorDataLoader
-from .utils import build_ticl_prior, dump_prior_to_h5
+from .utils import dump_prior_to_h5
 
 
 def main():
@@ -43,19 +43,7 @@ def main():
         args.save_path = f"prior_{args.lib}{prior_name}_{args.num_batches}x{args.batch_size}_{args.max_seq_len}x{args.max_features}.h5"
 
     if args.lib == "ticl":
-        # determine if this is a classification prior
-        is_classification_prior = args.prior_type in ["classification_adapter", "boolean_conjunctions", "step_function"]
-        
-        prior = TICLPriorDataLoader(
-            prior=build_ticl_prior(args.prior_type, args.base_prior_type, args.max_classes),
-            num_steps=args.num_batches,
-            batch_size=args.batch_size,
-            num_datapoints_max=args.max_seq_len,
-            num_features=args.max_features,
-            device=device,
-            min_eval_pos=args.min_eval_pos,
-        )
-        problem_type = "classification" if is_classification_prior else "regression"
+        raise NotImplementedError("Generic TICL prior dumping not implemented yet, only TabICL. Please specify --lib tabicl.")
     else:
         if args.min_seq_len == args.max_seq_len:
             args.min_seq_len = None  # TabICL prior requires min_seq_len < max_seq_len
